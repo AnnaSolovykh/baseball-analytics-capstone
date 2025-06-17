@@ -1,0 +1,31 @@
+year,team,category,games_played,wins,losses,league
+2020,Yankees,team_record,162,78,84,MLB
+2020,Dodgers,team_record,162,94,68,MLB
+2020,Astros,team_record,162,79,83,MLB
+2020,Braves,team_record,162,89,73,MLB
+2020,Red Sox,team_record,162,72,90,MLB
+2020,Giants,team_record,162,88,74,MLB
+2021,Yankees,team_record,162,84,78,MLB
+2021,Dodgers,team_record,162,86,76,MLB
+2021,Astros,team_record,162,90,72,MLB
+2021,Braves,team_record,162,81,81,MLB
+2021,Red Sox,team_record,162,84,78,MLB
+2021,Giants,team_record,162,73,89,MLB
+2022,Yankees,team_record,162,86,76,MLB
+2022,Dodgers,team_record,162,80,82,MLB
+2022,Astros,team_record,162,92,70,MLB
+2022,Braves,team_record,162,77,85,MLB
+2022,Red Sox,team_record,162,79,83,MLB
+2022,Giants,team_record,162,85,77,MLB
+2023,Yankees,team_record,162,79,83,MLB
+2023,Dodgers,team_record,162,99,63,MLB
+2023,Astros,team_record,162,79,83,MLB
+2023,Braves,team_record,162,87,75,MLB
+2023,Red Sox,team_record,162,81,81,MLB
+2023,Giants,team_record,162,79,83,MLB
+2024,Yankees,team_record,162,91,71,MLB
+2024,Dodgers,team_record,162,79,83,MLB
+2024,Astros,team_record,162,84,78,MLB
+2024,Braves,team_record,162,77,85,MLB
+2024,Red Sox,team_record,162,76,86,MLB
+2024,Giants,team_record,162,83,79,MLB

@@ -1,0 +1,8 @@
+player_name,stat_value,stat_type,team,category,rank
+Single-Season,Career,,Career,career_leaders,Wins Above Replacement
+Single-Season,Career,,Career,career_leaders,WAR Position Players
+Single-Season,Career,,Career,career_leaders,Offensive WAR
+Single-Season,Career,,Career,career_leaders,Defensive WAR
+Single-Season,Career,,Career,career_leaders,Batting Average
+Single-Season,Career,,Career,career_leaders,On-Base%
+Single-Season,Career,,Career,career_leaders,Slugging %
