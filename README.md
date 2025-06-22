@@ -8,225 +8,167 @@ This is a comprehensive data analysis pipeline that scrapes baseball history dat
 
 ```
 baseball-analytics-capstone/
-├── scraper.py              # Web scraping program
-├── database_import.py      # Database import program  
-├── database_query.py       # Command-line query interface
-├── dashboard.py            # Interactive dashboard
-├── requirements.txt        # Python dependencies
-├── README.md              # Project documentation
+├── scrapers/                  # Web scraping programs
+│   ├── award_winners_scraper.py
+│   ├── baseball_brothers.py
+│   └── yearly_stats.py
+├── dashboard.py               # Streamlit dashboard
+├── database_import.py         # Imports CSVs to SQLite
+├── database_query.py          # Command-line SQL interface
+├── requirements.txt           # Python dependencies
+├── README.md                  # Project documentation
 ├── data/
-│   ├── raw/               # Scraped CSV files
-│   │   ├── events.csv
-│   │   ├── players.csv
-│   │   └── statistics.csv
-│   └── processed/         # SQLite database
-│       └── baseball.db
-└── baseball_env/          # Virtual environment
+│   ├── raw/
+│   │   ├── mvp_awards.csv
+│   │   ├── baseball_brothers_sets.csv
+│   │   └── me_awards_list.csv
+│   └── baseball.db            # SQLite database
+└── baseball_env/              # Virtual environment
 ```
 
 ## Features
 
-### 1. Web Scraping (scraper.py)
-- **Source**: Baseball-Reference.com
-- **Compliance**: Follows robots.txt rules (3-second crawl delay)
-- **Data Collection**:
-  - 10 historical events (2020-2024)
-  - 7 career leaders and statistics  
-  - Team performance data
-- **Output**: 3 CSV files in `data/raw/`
+### 1. Web Scraping (`scrapers/`)
 
-### 2. Database Import (database_import.py)
-- **Database**: SQLite with 3 tables (events, players, statistics)
-- **Data Cleaning**: Handles missing values, duplicates, and validation
-- **Performance**: Creates indexes for fast queries
-- **Error Handling**: Comprehensive logging and validation
+* Sources data from baseball award and stats pages
+* Includes scrapers for:
 
-### 3. Database Query CLI (database_query.py)
-- **Features**: Interactive command-line interface
-- **Queries**: Supports JOIN operations and filtering
-- **Commands**: Events by year, players by team, custom SQL
-- **Output**: Formatted tables with summaries
+  * MVP Award history
+  * Notable family members (e.g., brothers)
+  * Yearly team statistics
+* Saves cleaned CSVs to `data/raw/`
 
-### 4. Interactive Dashboard (dashboard.py)
-- **Framework**: Streamlit
-- **Visualizations**: 3+ interactive charts
-- **Features**: Dropdowns, sliders, dynamic filtering
-- **Deployment**: Ready for Streamlit.io or Render
+### 2. Database Import (`database_import.py`)
+
+* Loads and normalizes all raw CSVs into SQLite
+* Handles missing values and type conversion
+* Automatically creates database tables and replaces data
+* Stores data in `data/baseball.db`
+
+### 3. Query CLI (`database_query.py`)
+
+```bash
+python3 database_query.py
+```
+
+**Features:**
+
+* Runs a set of predefined SQL queries with readable output
+* Provides an interactive SQL prompt for custom queries
+* Use `exit` or `quit` to leave the interface
+
+### 4. Interactive Dashboard (`dashboard.py`)
+
+* Built with Streamlit and Plotly
+* Includes filters by year, league, award type, family count
+* Sections:
+
+  * MVP Analysis
+  * Family Connections
+  * Awards Overview
+* Responsive and ready for deployment
 
 ## Installation
 
-### Prerequisites
-- Python 3.9+
-- Chrome browser (for web scraping)
+### Requirements
+
+* Python 3.9+
+* Google Chrome (for Selenium)
 
 ### Setup
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd baseball-analytics-capstone
-   ```
 
-2. **Create virtual environment**
-   ```bash
-   python3 -m venv baseball_env
-   source baseball_env/bin/activate  # Mac/Linux
-   # or
-   baseball_env\Scripts\activate     # Windows
-   ```
+```bash
+git clone <repository-url>
+cd baseball-analytics-capstone
 
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+python3 -m venv baseball_env
+source baseball_env/bin/activate      # macOS/Linux
+# or
+baseball_env\Scripts\activate         # Windows
+
+pip install -r requirements.txt
+```
 
 ## Usage
 
-### Step 1: Scrape Data
-```bash
-python3 scraper.py
-```
-**Results:**
-- Scrapes baseball data from Baseball-Reference.com
-- Follows robots.txt compliance (3-second delay)
-- Creates CSV files in `data/raw/`
+### Step 1: Scrape data
 
-### Step 2: Import to Database
+```bash
+python3 scrapers/award_winners_scraper.py
+python3 scrapers/baseball_brothers.py
+python3 scrapers/yearly_stats.py
+```
+
+### Step 2: Import data into SQLite
+
 ```bash
 python3 database_import.py
 ```
-**Results:**
-- Creates SQLite database at `data/processed/baseball.db`
-- Imports and cleans all CSV data
-- Creates performance indexes
 
-### Step 3: Query Database
+### Step 3: Explore via CLI
+
 ```bash
-python3 database_query.py --interactive
+python3 database_query.py
 ```
-**Available Commands:**
-- `events <year>` - Get events for specific year
-- `players <team>` - Get players for team
-- `join` - Join events with statistics
-- `summary` - Show yearly summary
-- `custom` - Execute custom SQL
 
-### Step 4: Launch Dashboard
+### Step 4: Launch dashboard
+
 ```bash
 streamlit run dashboard.py
 ```
-**Features:**
-- Interactive visualizations
-- Year and category filters
-- Real-time data updates
 
 ## Data Sources
 
-### Scraped Data Results
-- **Events**: 10 records (MLB seasons, World Series 2020-2024)
-- **Players**: 7 career leaders (batting, pitching statistics)
-- **Statistics**: Team performance data
-- **Source**: Baseball-Reference.com (with robots.txt compliance)
+* Award history and stats scraped from Baseball Almanac and other public sources
+* Family relationships collected from curated online databases
+* Statistics for MVP and team achievements across leagues
 
-### Database Schema
+## Database Schema
 
-#### Events Table
-- `year` (INTEGER): Year of event
-- `event_type` (TEXT): Type of event (season_summary, world_series)
-- `description` (TEXT): Event description
-- `value` (TEXT): Associated value
-- `category` (TEXT): Event category
+### Table: `mvp_awards`
 
-#### Players Table
-- `player_name` (TEXT): Player name
-- `stat_value` (TEXT): Statistical value
-- `stat_type` (TEXT): Type of statistic
-- `team` (TEXT): Associated team
-- `category` (TEXT): Player category
+| Column            | Type | Description                |
+| ----------------- | ---- | -------------------------- |
+| `year`            | TEXT | Year of the award          |
+| `player_name`     | TEXT | Name of the MVP player     |
+| `league`          | TEXT | League (e.g., A.L., N.L.)  |
+| `team`            | TEXT | Team name                  |
+| `position`        | TEXT | Player's position          |
+| `source_url`      | TEXT | URL of original data       |
+| `extraction_date` | TEXT | Date when data was scraped |
 
-#### Statistics Table
-- `year` (INTEGER): Season year
-- `team` (TEXT): Team name
-- `games_played` (INTEGER): Games in season
-- `wins` (INTEGER): Team wins
-- `losses` (INTEGER): Team losses
-- `league` (TEXT): League (MLB)
+### Table: `baseball_brothers_sets`
 
-## Technical Specifications
+| Column            | Type    | Description                   |
+| ----------------- | ------- | ----------------------------- |
+| `set_number`      | INTEGER | Unique ID of brother set      |
+| `brothers_count`  | INTEGER | Number of brothers in the set |
+| `brothers_names`  | TEXT    | Comma-separated list of names |
+| `source_url`      | TEXT    | URL of original data          |
+| `extraction_date` | TEXT    | Date when data was scraped    |
 
-### Web Scraping Compliance
-- **Robots.txt**: Fully compliant with Baseball-Reference.com rules
-- **Crawl Delay**: 3 seconds between requests
-- **User Agent**: Standard browser identification
-- **Error Handling**: Graceful failures with sample data fallback
+### Table: `me_awards_list`
 
-### Data Processing
-- **Validation**: Year ranges, data types, missing values
-- **Cleaning**: Duplicate removal, standardization
-- **Performance**: Database indexes for fast queries
-
-### Visualization
-- **Charts**: Time series, bar charts, scatter plots
-- **Interactivity**: Filters, sliders, dynamic updates
-- **Responsive**: Works on desktop and mobile
+| Column            | Type | Description                          |
+| ----------------- | ---- | ------------------------------------ |
+| `award`           | TEXT | Name of the award                    |
+| `years`           | TEXT | Year range of award (e.g. 2010–2014) |
+| `link`            | TEXT | Link to details                      |
+| `source_url`      | TEXT | URL of original data                 |
+| `extraction_date` | TEXT | Date when data was scraped           |
 
 ## Dependencies
 
-### Core Libraries
-- `pandas` - Data manipulation and analysis
-- `numpy` - Numerical computing
-- `sqlite3` - Database operations (built-in)
-
-### Web Scraping
-- `selenium` - Web browser automation
-- `webdriver-manager` - Chrome driver management
-
-### Visualization
-- `streamlit` - Dashboard framework
-- `plotly` - Interactive charts
-- `matplotlib` - Static plots
-- `seaborn` - Statistical visualization
-
-### Deployment
-- `gunicorn` - Web server for production
-
-## Project Highlights
-
-### Web Scraping Excellence
-- Ethical scraping with robots.txt compliance
-- Robust error handling and fallback data
-- Proper delays and browser automation
-
-### Data Pipeline
-- Complete ETL process (Extract, Transform, Load)
-- Data validation and cleaning
-- Efficient database design
-
-### Interactive Analysis
-- Command-line interface for ad-hoc queries
-- Web dashboard for visual exploration
-- Real-time data filtering and updates
-
-### Production Ready
-- Comprehensive error handling
-- Logging and monitoring
-- Deployment configuration
-
-## Future Enhancements
-
-- [ ] Add more data sources (FanGraphs, ESPN)
-- [ ] Implement machine learning predictions
-- [ ] Add user authentication
-- [ ] Real-time data updates
-- [ ] Advanced statistical analysis
+* pandas
+* numpy
+* selenium
+* webdriver-manager
+* plotly
+* streamlit
+* sqlite3 (built-in)
 
 ## License
 
-This project is for educational purposes. Please respect the terms of service of data sources.
+This project is for educational purposes only. It respects all data source terms and usage policies. No commercial redistribution.
 
-## Contact
-
-For questions about this project, please open an issue in the repository.
-
----
-
-**Note**: This project demonstrates ethical web scraping practices and follows all robots.txt guidelines. Data is used for educational analysis only.
+Created as part of the *Code The Dream* Python class.
