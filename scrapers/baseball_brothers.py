@@ -68,9 +68,9 @@ try:
         df = pd.DataFrame(data)
         os.makedirs("data/raw", exist_ok=True)
         df.to_csv(OUTPUT_CSV, index=False)
-        logger.info(f"✅ Extracted {len(df)} records to {OUTPUT_CSV}")
+        logger.info(f"Extracted {len(df)} records to {OUTPUT_CSV}")
     else:
-        logger.warning("⚠️ No records extracted.")
+        logger.warning("No records extracted.")
 
 except Exception as e:
     logger.error(f"Error during scraping: {e}")
