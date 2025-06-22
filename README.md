@@ -1,5 +1,7 @@
 # Baseball Analytics Capstone Project
 
+[https://baseball-analytics-capstone.streamlit.app](https://baseball-analytics-capstone.streamlit.app)
+
 ## Project Overview
 
 This is a comprehensive data analysis pipeline that scrapes baseball history data, stores it in a database, and presents insights through an interactive dashboard. The project demonstrates web scraping, data processing, database management, and data visualization skills.
